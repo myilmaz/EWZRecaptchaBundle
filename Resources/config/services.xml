@@ -18,11 +18,11 @@
             <argument>%ewz_recaptcha.locale_key%</argument>
         </service>
 
-        <service id="ewz_recaptcha.validator.true" class="%ewz_recaptcha.validator.true.class%">
+        <service id="ewz_recaptcha.validator.true" class="%ewz_recaptcha.validator.true.class%" scope="request">
             <tag name="validator.constraint_validator" alias="ewz_recaptcha.true" />
             <argument>%ewz_recaptcha.enabled%</argument>
             <argument>%ewz_recaptcha.private_key%</argument>
-            <argument type="service" id="request_stack" />
+            <argument type="service" id="request" />
         </service>
     </services>
 </container>

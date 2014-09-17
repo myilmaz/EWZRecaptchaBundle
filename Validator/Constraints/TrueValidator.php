@@ -2,7 +2,7 @@
 
 namespace EWZ\Bundle\RecaptchaBundle\Validator\Constraints;
 
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ValidatorException;
@@ -28,9 +28,9 @@ class TrueValidator extends ConstraintValidator
     /**
      * Request Stack
      *
-     * @var \Symfony\Component\HttpFoundation\RequestStack
+     * @var \Symfony\Component\HttpFoundation\Request
      */
-    protected $requestStack;
+    protected $request;
 
     /**
      * The reCAPTCHA server URL's
@@ -42,11 +42,11 @@ class TrueValidator extends ConstraintValidator
      *
      * @param ContainerInterface $container An ContainerInterface instance
      */
-    public function __construct($enabled, $privateKey, RequestStack $requestStack)
+    public function __construct($enabled, $privateKey, Request $request)
     {
         $this->enabled = $enabled;
         $this->privateKey = $privateKey;
-        $this->requestStack = $requestStack;
+        $this->request = $request;
     }
 
     /**
@@ -60,9 +60,9 @@ class TrueValidator extends ConstraintValidator
         }
 
         // define variable for recaptcha check answer
-        $remoteip   = $this->requestStack->getMasterRequest()->server->get('REMOTE_ADDR');
-        $challenge  = $this->requestStack->getMasterRequest()->get('recaptcha_challenge_field');
-        $response   = $this->requestStack->getMasterRequest()->get('recaptcha_response_field');
+        $remoteip   = $this->request->server->get('REMOTE_ADDR');
+        $challenge  = $this->request->get('recaptcha_challenge_field');
+        $response   = $this->request->get('recaptcha_response_field');
 
         if (
             isset($this->cache[$this->privateKey]) &&
